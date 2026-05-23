@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stay at Matcha Fields — Wazuka, Kyoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+/* ─── CSS VARIABLES ─────────────────────────────────── */
+:root {
+  --cream:       #F8F3EC;
+  --cream-dark:  #EDE7DA;
+  --paper:       #FAF8F3;
+  --tea:         #6B8C5E;
+  --tea-light:   #8BAA7D;
+  --tea-dark:    #4D6843;
+  --tea-pale:    #D4E0CE;
+  --charcoal:    #2A2723;
+  --charcoal-mid:#4A4540;
+  --charcoal-lt: #7A746C;
+  --wood:        #B5784A;
+  --wood-light:  #D4A878;
+  --wood-pale:   #EDD9C0;
+  --ink:         #1C1A17;
+  --mist:        #E8EDE3;
+  --white:       #FFFFFF;
+
+  --font-d: 'Cormorant Garamond', Georgia, serif;
+  --font-jp:'Noto Serif JP', serif;
+  --font-ui:'Jost', sans-serif;
+
+  --pad: clamp(72px, 9vw, 130px);
+  --w:   min(90vw, 1180px);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: var(--font-d);
+  font-weight: 400;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: .028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+p { font-size: clamp(.92rem, 1.4vw, 1.04rem); line-height: 1.9; color: var(--charcoal-mid); }
+
+/* ─── SCROLL REVEAL ──────────────────────────────────── */
+.r   { opacity: 0; transform: translateY(28px);  transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.rl  { opacity: 0; transform: translateX(-28px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.rr  { opacity: 0; transform: translateX(28px);  transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.revealed { opacity: 1 !important; transform: none !important; }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+.d5 { transition-delay: .5s; }
+
+/* ─── TYPOGRAPHY HELPERS ─────────────────────────────── */
+.label {
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--tea);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.label::before { content: ''; width: 22px; height: 1px; background: var(--tea); }
+.label--lt { color: var(--tea-light); }
+.label--lt::before { background: var(--tea-light); }
+
+h2.title {
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--charcoal);
+}
+h2.title em { font-style: italic; color: var(--tea); }
+h2.title--lt { color: var(--white); }
+
+.rule { width: 46px; height: 1px; background: var(--wood-light); margin: 22px 0; }
+.rule--lt { background: rgba(255,255,255,.2); }
+
+/* ─── BUTTONS ────────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  font-weight: 400;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  cursor: pointer;
+  transition: all .3s var(--ease);
+  border: none;
+}
+.btn-green  { background: var(--tea);  color: var(--white); }
+.btn-green:hover { background: var(--tea-dark); transform: translateY(-2px); }
+.btn-outline-w { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.5); }
+.btn-outline-w:hover { background: rgba(255,255,255,.1); border-color: var(--white); transform: translateY(-2px); }
+
+/* ─── NAVIGATION ─────────────────────────────────────── */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 48px;
+  transition: background .45s, padding .45s, box-shadow .45s;
+}
+.nav.solid {
+  background: rgba(248,243,236,.96);
+  backdrop-filter: blur(12px);
+  padding: 15px 48px;
+  box-shadow: 0 1px 0 rgba(42,39,35,.08);
+}
+.nav-logo {
+  font-family: var(--font-d);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .07em;
+  color: var(--white);
+  transition: color .45s;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.nav-logo-jp {
+  font-family: var(--font-jp);
+  font-size: .78rem;
+  font-weight: 200;
+  opacity: .65;
+}
+.nav.solid .nav-logo { color: var(--charcoal); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: .74rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.8);
+  transition: color .3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width .3s var(--ease);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav.solid .nav-links a { color: var(--charcoal-lt); }
+.nav.solid .nav-links a:hover { color: var(--charcoal); }
+
+.nav-book {
+  padding: 9px 22px !important;
+  border: 1px solid rgba(255,255,255,.55) !important;
+  color: var(--white) !important;
+  background: transparent !important;
+  transition: background .3s, color .3s !important;
+}
+.nav-book::after { display: none !important; }
+.nav-book:hover { background: var(--white) !important; color: var(--charcoal) !important; }
+.nav.solid .nav-book { border-color: var(--tea) !important; color: var(--tea) !important; }
+.nav.solid .nav-book:hover { background: var(--tea) !important; color: var(--white) !important; }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { width: 24px; height: 1px; background: var(--white); display: block; transition: all .3s; }
+.nav.solid .hamburger span { background: var(--charcoal); }
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Mobile drawer */
+.drawer {
+  position: fixed;
+  inset: 0;
+  background: var(--cream);
+  z-index: 190;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s;
+}
+.drawer.open { opacity: 1; pointer-events: all; }
+.drawer a {
+  font-family: var(--font-d);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--charcoal);
+  letter-spacing: .04em;
+  transition: color .2s;
+}
+.drawer a:hover { color: var(--tea); }
+
+/* ─── HERO ───────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* PHOTO: Hero background — use aerial/wide-angle shot of Wazuka tea fields at golden hour */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.12);
+  will-change: transform;
+}
+.hero-bg img { object-position: center 60%; }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(18,15,10,.3) 0%, rgba(18,15,10,.62) 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 24px;
+  max-width: 880px;
+}
+.hero-jp {
+  font-family: var(--font-jp);
+  font-size: clamp(.7rem, 1.3vw, .88rem);
+  font-weight: 200;
+  letter-spacing: .3em;
+  color: rgba(255,255,255,.55);
+  display: block;
+  margin-bottom: 20px;
+  animation: up 1.1s var(--ease) .2s both;
+}
+.hero-title {
+  font-family: var(--font-d);
+  font-size: clamp(3.2rem, 9vw, 7.5rem);
+  font-weight: 300;
+  color: var(--white);
+  letter-spacing: .03em;
+  line-height: 1.02;
+  margin-bottom: 22px;
+  animation: up 1.1s var(--ease) .4s both;
+}
+.hero-tagline {
+  font-family: var(--font-d);
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,255,255,.78);
+  animation: up 1.1s var(--ease) .6s both;
+}
+.hero-line {
+  width: 36px;
+  height: 1px;
+  background: rgba(255,255,255,.35);
+  margin: 22px auto;
+  animation: up 1.1s var(--ease) .82s both;
+}
+.hero-sub {
+  font-size: clamp(.82rem, 1.4vw, .98rem);
+  color: rgba(255,255,255,.62);
+  max-width: 540px;
+  margin: 0 auto 38px;
+  line-height: 1.85;
+  animation: up 1.1s var(--ease) .82s both;
+}
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: up 1.1s var(--ease) 1s both;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: up 1.1s var(--ease) 1.4s both;
+}
+.hero-scroll-label {
+  font-family: var(--font-ui);
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
+.scroll-bar {
+  width: 1px;
+  height: 42px;
+  background: linear-gradient(to bottom, rgba(255,255,255,.45), transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+.hero-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 7px 16px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(6px);
+  animation: up 1.1s var(--ease) .7s both;
+}
+.hero-stars {
+  color: #F5C842;
+  font-size: .85rem;
+  letter-spacing: 1px;
+}
+.hero-rating-text {
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.8);
+}
+@keyframes up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pulse {
+  0%,100% { opacity: .5; }
+  50%      { opacity: 1; }
+}
+
+/* ─── SECTION SHELL ──────────────────────────────────── */
+.sec { padding: var(--pad) 0; }
+.ctn { width: var(--w); margin: 0 auto; }
+
+/* ─── ABOUT ──────────────────────────────────────────── */
+.about { background: var(--paper); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-text p { margin-bottom: 18px; }
+.about-text p:last-of-type { margin-bottom: 0; }
+
+/* PHOTO: About section — tea field view from or near the guesthouse, or guesthouse exterior */
+.about-img {
+  position: relative;
+  height: 580px;
+}
+.about-img::after {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  right: -18px;
+  width: 55%;
+  height: 38%;
+  border: 1px solid var(--tea-pale);
+  z-index: -1;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 20px;
+  margin-top: 40px;
+  padding-top: 36px;
+  border-top: 1px solid var(--cream-dark);
+}
+.stat-n {
+  font-family: var(--font-d);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--tea);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-l {
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--charcoal-lt);
+}
+
+/* ─── ROOMS ──────────────────────────────────────────── */
+.rooms { background: var(--cream); }
+.rooms-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-top: 56px;
+}
+.room-card {
+  background: var(--paper);
+  overflow: hidden;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.room-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 60px rgba(42,39,35,.11);
+}
+
+/* PHOTO: Single Room — cozy tatami room, warm light, minimalist */
+/* PHOTO: Twin Room — two beds, Japanese countryside style, natural light */
+.room-img {
+  height: 290px;
+  overflow: hidden;
+  position: relative;
+}
+.room-img img { transition: transform .6s var(--ease); }
+.room-card:hover .room-img img { transform: scale(1.05); }
+.room-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--font-ui);
+  font-size: .62rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  background: var(--tea);
+  color: var(--white);
+  padding: 5px 12px;
+}
+.room-body { padding: 34px; }
+.room-name {
+  font-family: var(--font-d);
+  font-size: 1.75rem;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+.room-desc {
+  font-size: .92rem;
+  color: var(--charcoal-lt);
+  margin-bottom: 22px;
+  line-height: 1.8;
+}
+.room-feats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 14px;
+}
+.room-feats li {
+  font-family: var(--font-ui);
+  font-size: .77rem;
+  color: var(--charcoal-mid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.room-feats li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--tea-light);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── FACILITIES ─────────────────────────────────────── */
+.fac { background: var(--ink); }
+.fac .label { color: var(--tea-light); }
+.fac .label::before { background: var(--tea-light); }
+.fac h2.title--lt { color: var(--white); }
+
+.fac-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  margin-top: 56px;
+}
+.fac-img-block {
+  overflow: hidden;
+  min-height: 260px;
+}
+
+/* PHOTO: Shared kitchen — warm, inviting, well-equipped shared kitchen */
+/* PHOTO: Shared bathroom — clean, bright, modern shared bathroom */
+
+.fac-block {
+  padding: 44px 40px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.fac-block h3 {
+  font-family: var(--font-d);
+  font-size: 1.55rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+.fac-block .fac-sub {
+  font-family: var(--font-ui);
+  font-size: .8rem;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.fac-list { list-style: none; }
+.fac-list li {
+  font-family: var(--font-ui);
+  font-size: .8rem;
+  color: rgba(255,255,255,.55);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fac-list li:last-child { border-bottom: none; }
+.fac-list li::before { content: '—'; color: var(--tea-light); font-size: .68rem; }
+
+.fac-toilet {
+  grid-column: 1 / -1;
+  padding: 36px 40px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.fac-toilet h3 {
+  font-family: var(--font-d);
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--cream);
+  white-space: nowrap;
+}
+.fac-toilet p {
+  font-family: var(--font-ui);
+  font-size: .8rem;
+  color: rgba(255,255,255,.45);
+  line-height: 1.7;
+}
+
+/* ─── SERVICES ───────────────────────────────────────── */
+.svc { background: var(--mist); }
+.svc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 56px;
+}
+.svc-group h3 {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.svc-group h3::after { content:''; flex:1; height:1px; background:var(--cream-dark); }
+.svc-list { list-style:none; }
+.svc-list li {
+  font-family: var(--font-ui);
+  font-size: .83rem;
+  color: var(--charcoal-mid);
+  padding: 13px 0;
+  border-bottom: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.svc-list li:last-child { border-bottom: none; }
+.svc-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--tea-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .92rem;
+  flex-shrink: 0;
+}
+
+/* ─── STAY INFO ──────────────────────────────────────── */
+.stay { background: var(--paper); }
+.stay-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 28px;
+  margin-top: 56px;
+}
+.icard {
+  padding: 38px 32px;
+  border: 1px solid var(--cream-dark);
+  background: var(--cream);
+}
+.icard h3 {
+  font-family: var(--font-d);
+  font-size: 1.18rem;
+  font-weight: 400;
+  color: var(--charcoal);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--tea-pale);
+  margin-bottom: 18px;
+}
+.irow { margin-bottom: 14px; }
+.irow .lbl {
+  font-family: var(--font-ui);
+  font-size: .65rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--charcoal-lt);
+  margin-bottom: 2px;
+}
+.irow .val { font-size: .97rem; color: var(--charcoal); }
+.ilist { list-style: none; }
+.ilist li {
+  font-family: var(--font-ui);
+  font-size: .8rem;
+  color: var(--charcoal-mid);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.55;
+}
+.ilist li:last-child { border-bottom: none; }
+.ilist li::before { content:'·'; color:var(--tea); font-size:1.1rem; line-height:1.4; flex-shrink:0; }
+
+/* ─── WAZUKA ─────────────────────────────────────────── */
+.wazuka { background: var(--cream); }
+.wazuka-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-bottom: 72px;
+}
+.wazuka-text p { margin-bottom: 16px; }
+
+/* PHOTO: Wazuka landscape — wide shot of tea field rows, Wazuka countryside */
+.wazuka-img {
+  height: 440px;
+  overflow: hidden;
+}
+.wazuka-img img { transition: transform .6s var(--ease); }
+.wazuka-img:hover img { transform: scale(1.04); }
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+  margin-top: 34px;
+}
+.exp-item {
+  background: var(--mist);
+  padding: 18px 16px;
+  border-left: 2px solid var(--tea-light);
+  font-family: var(--font-ui);
+  font-size: .78rem;
+  color: var(--charcoal-mid);
+  line-height: 1.5;
+}
+
+/* Gallery */
+.gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 270px 270px;
+  gap: 4px;
+  margin-top: 14px;
+}
+.g-item { overflow: hidden; position: relative; }
+.g-item:first-child { grid-row: 1 / 3; }
+.g-item img { transition: transform .5s var(--ease); }
+.g-item:hover img { transform: scale(1.06); }
+.g-cap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px;
+  background: linear-gradient(to top, rgba(0,0,0,.58), transparent);
+  font-family: var(--font-ui);
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.8);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.g-item:hover .g-cap { opacity: 1; }
+
+/* ─── MAP ────────────────────────────────────────────── */
+.map-block {
+  margin-top: 64px;
+}
+.map-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.map-header h3 {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--charcoal);
+}
+.map-address {
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  color: var(--charcoal-lt);
+  letter-spacing: .04em;
+}
+.map-frame {
+  width: 100%;
+  height: 420px;
+  border: 0;
+  display: block;
+  filter: saturate(.85) contrast(.96);
+}
+
+/* ─── HOST ───────────────────────────────────────────── */
+.host { background: var(--paper); }
+.host-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* PHOTO: Host portrait — Mao, natural and warm, smiling, outdoors or inside guesthouse */
+.host-img {
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+.host-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(107,140,94,.12), transparent);
+  z-index: 1;
+}
+.host-name {
+  font-family: var(--font-d);
+  font-size: 2.7rem;
+  font-weight: 300;
+  margin-bottom: 6px;
+}
+.host-role {
+  font-family: var(--font-ui);
+  font-size: .72rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--tea);
+  margin-bottom: 28px;
+}
+.host-text p { margin-bottom: 18px; }
+.host-text p:last-child { margin-bottom: 0; }
+
+/* ─── STICKY BOOK BUTTON ────────────────────────────── */
+.sticky-book {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FF385C;
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  border-radius: 60px;
+  box-shadow: 0 6px 28px rgba(255,56,92,.38);
+  text-decoration: none;
+  transition: background .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease), opacity .3s;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+.sticky-book.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+.sticky-book:hover {
+  background: #e8284f;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(255,56,92,.45);
+}
+.sticky-book:active {
+  transform: translateY(0);
+}
+.sticky-book svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .sticky-book {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    justify-content: center;
+    border-radius: 60px;
+  }
+}
+
+/* ─── BOOKING ────────────────────────────────────────── */
+.booking {
+  background: var(--cream);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.booking::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,56,92,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.booking-inner {
+  max-width: 660px;
+  margin: 0 auto;
+  position: relative;
+}
+.booking-title {
+  text-align: center;
+  margin-bottom: 0;
+}
+.booking-rule {
+  width: 46px;
+  height: 1px;
+  background: rgba(255,56,92,.4);
+  margin: 22px auto;
+}
+.booking-text {
+  font-size: clamp(.9rem, 1.4vw, 1.02rem);
+  color: var(--charcoal-lt);
+  line-height: 1.9;
+  margin-bottom: 44px;
+  text-align: center;
+}
+.booking-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  background: #FF385C;
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: .88rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 20px 48px;
+  border-radius: 60px;
+  border: none;
+  cursor: pointer;
+  transition: background .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
+  box-shadow: 0 6px 28px rgba(255,56,92,.28);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.booking-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  border-radius: 60px;
+  transition: background .3s;
+}
+.booking-btn:hover {
+  background: #e8284f;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(255,56,92,.38);
+}
+.booking-btn:hover::after {
+  background: rgba(255,255,255,.06);
+}
+.booking-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255,56,92,.28);
+}
+.airbnb-belo {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+.booking-note {
+  margin-top: 22px;
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--charcoal-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.booking-note span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.booking-note span::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--tea-light);
+  border-radius: 50%;
+  display: inline-block;
+}
+.booking-note span:first-child::before { display: none; }
+
+/* ─── CONTACT ────────────────────────────────────────── */
+.contact { background: var(--charcoal); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: 80px;
+  align-items: start;
+}
+.contact-aside h3 {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+.contact-aside .sub {
+  font-family: var(--font-ui);
+  font-size: .83rem;
+  color: rgba(255,255,255,.48);
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+.c-detail { display: flex; flex-direction: column; gap: 12px; }
+.c-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-ui);
+  font-size: .8rem;
+  color: rgba(255,255,255,.55);
+}
+.c-row .c-lbl {
+  font-size: .65rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--tea-light);
+  min-width: 70px;
+}
+
+/* Form */
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg.full { grid-column: 1 / -1; }
+.fg label {
+  font-family: var(--font-ui);
+  font-size: .63rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.fg input,
+.fg select,
+.fg textarea {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--white);
+  padding: 12px 15px;
+  font-family: var(--font-d);
+  font-size: .95rem;
+  width: 100%;
+  outline: none;
+  transition: border-color .3s;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+.fg input:focus,
+.fg select:focus,
+.fg textarea:focus { border-color: var(--tea-light); }
+.fg input::placeholder,
+.fg textarea::placeholder { color: rgba(255,255,255,.2); }
+.fg select option { background: var(--charcoal); }
+.fg textarea { min-height: 100px; resize: vertical; }
+.fg .err {
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  color: #e08888;
+  display: none;
+}
+.fg.bad input,
+.fg.bad select,
+.fg.bad textarea { border-color: #e08888; }
+.fg.bad .err { display: block; }
+.form-foot { grid-column: 1 / -1; margin-top: 6px; }
+.form-foot button {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-size: .76rem;
+  font-weight: 400;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  background: var(--tea);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  transition: background .3s var(--ease);
+}
+.form-foot button:hover { background: var(--tea-dark); }
+.form-ok {
+  display: none;
+  text-align: center;
+  padding: 60px 40px;
+  background: rgba(107,140,94,.1);
+  border: 1px solid rgba(107,140,94,.2);
+}
+.form-ok h3 {
+  font-family: var(--font-d);
+  font-size: 1.9rem;
+  font-weight: 300;
+  color: var(--tea-light);
+  margin-bottom: 10px;
+}
+.form-ok p {
+  font-family: var(--font-ui);
+  font-size: .85rem;
+  color: rgba(255,255,255,.5);
+  line-height: 1.75;
+}
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  padding: 56px 0 36px;
+  text-align: center;
+}
+.f-logo {
+  font-family: var(--font-d);
+  font-size: 1.55rem;
+  font-weight: 300;
+  color: var(--cream);
+  letter-spacing: .07em;
+  margin-bottom: 4px;
+}
+.f-sub {
+  font-family: var(--font-jp);
+  font-size: .8rem;
+  font-weight: 200;
+  color: rgba(255,255,255,.28);
+  margin-bottom: 28px;
+}
+.f-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  list-style: none;
+  margin-bottom: 28px;
+}
+.f-links a {
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  transition: color .3s;
+}
+.f-links a:hover { color: rgba(255,255,255,.75); }
+.f-copy {
+  font-family: var(--font-ui);
+  font-size: .64rem;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.18);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 1040px) {
+  .about-grid, .host-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-img { height: 400px; }
+  .host-img  { height: 380px; max-width: 480px; }
+  .about-img::after { display: none; }
+  .wazuka-top { grid-template-columns: 1fr; gap: 48px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .stay-grid { grid-template-columns: 1fr 1fr; }
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 230px 230px 230px;
+  }
+  .g-item:first-child { grid-row: 1; grid-column: 1 / 3; }
+}
+@media (max-width: 768px) {
+  :root { --pad: 60px; }
+  .nav { padding: 18px 24px; }
+  .nav.solid { padding: 12px 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .rooms-grid, .fac-grid, .svc-grid, .stay-grid { grid-template-columns: 1fr; }
+  .fac-toilet { flex-direction: column; gap: 12px; }
+  .exp-grid { grid-template-columns: 1fr 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .form { grid-template-columns: 1fr; }
+  .fg.full { grid-column: 1; }
+  .form-foot { grid-column: 1; }
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 180px 180px 180px;
+  }
+}
+@media (max-width: 480px) {
+  .hero-btns { flex-direction: column; align-items: center; }
+  .btn { width: 100%; text-align: center; }
+  .exp-grid { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr; gap: 14px; }
+  .gallery { grid-template-columns: 1fr; grid-template-rows: repeat(4, 200px); }
+  .g-item:first-child { grid-column: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ─────────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">
+    Stay at Matcha Fields
+    <span class="nav-logo-jp">民泊 抹茶畑に泊まろう。</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#location">Location</a></li>
+    <li><a href="#host">Host</a></li>
+    <li><a href="#contact" class="nav-book">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="ham">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="drawer" id="drawer">
+  <a href="#about"    class="dl">About</a>
+  <a href="#rooms"    class="dl">Rooms</a>
+  <a href="#location" class="dl">Location</a>
+  <a href="#host"     class="dl">Host</a>
+  <a href="#contact"  class="dl">Contact</a>
+</div>
+
+<!-- ── HERO ───────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <!-- PHOTO: Hero background — aerial or wide-angle Wazuka tea field, golden hour or morning mist -->
+  <!-- Ideal: rows of tea bushes stretching toward mountains, cinematic light -->
+  <div class="hero-bg" id="heroBg">
+    <img
+      src="Images/hero.jpeg"
+      alt="Stay at Matcha Fields — tea fields of Wazuka, Kyoto"
+      loading="eager"
+    >
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-jp">和束 · 京都府 · Wazuka, Kyoto</span>
+    <h1 class="hero-title">Stay at<br>Matcha Fields</h1>
+    <p class="hero-tagline">Stay among the tea fields of Kyoto</p>
+    <div class="hero-rating">
+      <span class="hero-stars">★★★★★</span>
+      <span class="hero-rating-text">5.0 · 21 reviews on Google</span>
+    </div>
+    <div class="hero-line"></div>
+    <p class="hero-sub">
+      A peaceful countryside guesthouse surrounded by Wazuka's beautiful tea fields.
+      Slow down, breathe deeply, and experience a quieter side of Japan.
+    </p>
+    <div class="hero-btns">
+      <a href="#rooms"   class="btn btn-green">View Rooms</a>
+      <a href="#contact" class="btn btn-outline-w">Contact</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="hero-scroll-label">Scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────────────────────────── -->
+<section class="sec about" id="about">
+  <div class="ctn">
+    <div class="about-grid">
+      <div>
+        <p class="label r">Our Story</p>
+        <h2 class="title r d1">A place to breathe,<br><em>slow down</em>, and belong</h2>
+        <div class="rule r d2"></div>
+        <p class="r d2">
+          Welcome to our guesthouse surrounded by the beautiful tea fields of Wazuka, Kyoto.
+        </p>
+        <p class="r d3">
+          Wazuka is one of Japan's most renowned tea-producing regions, with more than 800 years of tea-growing history. Nearly half of Kyoto's famous Uji tea is cultivated here, creating a breathtaking landscape of endless green tea fields and peaceful countryside scenery.
+        </p>
+        <p class="r d3">
+          Wake up to the sound of birds in the morning, stroll through the tea fields during the day, and relax beneath a quiet sky filled with stars at night. Our guesthouse offers a chance to step away from the rush of everyday life and reconnect with nature in a calm and authentic Japanese setting.
+        </p>
+        <p class="r d4">
+          Popular local experiences include tea tastings, guided walks through the tea plantations, and bicycle tours around the countryside. We hope our guesthouse becomes a place where travelers can meet, share stories, and experience the beauty of Japanese culture and nature together.
+        </p>
+        <p class="r d4"><em>Come and enjoy the peaceful atmosphere of Wazuka.</em></p>
+        <div class="stats r d5">
+          <div><div class="stat-n">800+</div><div class="stat-l">Years of tea history</div></div>
+          <div><div class="stat-n">50%</div><div class="stat-l">Of Kyoto's Uji tea</div></div>
+          <div><div class="stat-n">2</div><div class="stat-l">Comfortable rooms</div></div>
+        </div>
+      </div>
+
+      <!-- PHOTO: About section — tea field view from the guesthouse, or exterior of the property -->
+      <!-- Replace with your own photo showing the guesthouse setting or nearby tea fields -->
+      <div class="about-img rr">
+        <img
+          src="Images/house.jpeg"
+          alt="Stay at Matcha Fields — guesthouse exterior"
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROOMS ──────────────────────────────────────────── -->
+<section class="sec rooms" id="rooms">
+  <div class="ctn">
+    <p class="label r">Accommodation</p>
+    <h2 class="title r d1">Your room in the<br><em>tea fields</em></h2>
+    <div class="rooms-grid">
+
+      <!-- Single Room -->
+      <div class="room-card r d2">
+        <!-- PHOTO: Single Room — cozy tatami-style room, warm natural light, minimalist decor -->
+        <!-- Replace with your actual Single Room photo -->
+        <div class="room-img">
+          <img
+            src="Images/single_room.jpeg"
+            alt="Single Room — Stay at Matcha Fields"
+          >
+          <span class="room-badge">Single Room</span>
+        </div>
+        <div class="room-body">
+          <h3 class="room-name">Single Room</h3>
+          <p class="room-desc">
+            A calm and cozy tatami room, ideal for solo travelers and long-term stays.
+            Enjoy the quiet rhythm of Wazuka and spend your time at your own pace.
+          </p>
+          <ul class="room-feats">
+            <li>Semi-double bed</li>
+            <li>Air conditioning</li>
+            <li>Wi-Fi</li>
+            <li>Power outlets</li>
+            <li>Hangers</li>
+            <li>Sofa</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Twin Room -->
+      <div class="room-card r d3">
+        <!-- PHOTO: Twin Room — two beds, Japanese countryside style, soft natural light -->
+        <!-- Replace with your actual Twin Room photo -->
+        <div class="room-img">
+          <img
+            src="Images/double_room.jpeg"
+            alt="Twin Room — Stay at Matcha Fields"
+          >
+          <span class="room-badge">Twin Room</span>
+        </div>
+        <div class="room-body">
+          <h3 class="room-name">Twin Room</h3>
+          <p class="room-desc">
+            A traditional Japanese-style room where friends, couples, or families can relax comfortably.
+            Take in the natural beauty of Wazuka and enjoy a peaceful stay surrounded by countryside scenery.
+          </p>
+          <ul class="room-feats">
+            <li>Two semi-double beds</li>
+            <li>Air conditioning</li>
+            <li>Wi-Fi</li>
+            <li>Power outlets</li>
+            <li>Table</li>
+            <li>Sofa</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FACILITIES ─────────────────────────────────────── -->
+<section class="sec fac" id="facilities">
+  <div class="ctn">
+    <p class="label label--lt r">Shared Spaces</p>
+    <h2 class="title title--lt r d1">Facilities for<br><em style="color:var(--tea-light)">every guest</em></h2>
+    <div class="fac-grid r d2">
+
+      <!-- PHOTO: Shared kitchen — warm, inviting, well-equipped communal kitchen area -->
+      <!-- Replace with your actual kitchen photo -->
+      <div class="fac-img-block">
+        <img
+          src="Images/kitchen.jpeg"
+          alt="Shared kitchen facilities"
+          style="width:100%;height:100%;object-fit:cover;"
+        >
+      </div>
+
+      <div class="fac-block">
+        <h3>Kitchen</h3>
+        <p class="fac-sub">Guests are free to use the shared kitchen facilities.</p>
+        <ul class="fac-list">
+          <li>Refrigerator</li>
+          <li>Microwave</li>
+          <li>Toaster</li>
+          <li>Kettle</li>
+          <li>Dishes and utensils</li>
+          <li>Dining table set</li>
+        </ul>
+      </div>
+
+      <div class="fac-block">
+        <h3>Bathroom</h3>
+        <p class="fac-sub">Clean shared bathroom facilities are available for all guests.</p>
+        <ul class="fac-list">
+          <li>Shampoo</li>
+          <li>Conditioner</li>
+          <li>Body soap</li>
+          <li>Hair dryer</li>
+        </ul>
+      </div>
+
+      <!-- PHOTO: Shared bathroom — clean, bright, simple shared bathroom -->
+      <!-- Replace with your actual bathroom photo -->
+      <div class="fac-img-block">
+        <img
+          src="Images/bathroom.jpeg"
+          alt="Clean shared bathroom"
+          style="width:100%;height:100%;object-fit:cover;"
+        >
+      </div>
+
+      <div class="fac-toilet">
+        <h3>Toilet</h3>
+        <p>Shared toilet facilities are available and maintained throughout the day. Our facilities are kept clean and comfortable for every guest's stay.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ───────────────────────────────────────── -->
+<section class="sec svc" id="services">
+  <div class="ctn">
+    <p class="label r">What's Included</p>
+    <h2 class="title r d1">Services &amp;<br><em>amenities</em></h2>
+    <div class="svc-grid">
+      <div class="svc-group r d2">
+        <h3>Free Services</h3>
+        <ul class="svc-list">
+          <li><div class="svc-icon">📶</div>Wi-Fi — Available throughout the guesthouse</li>
+          <li><div class="svc-icon">🔌</div>Power outlets — In all rooms</li>
+          <li><div class="svc-icon">🧳</div>Luggage storage — Before check-in &amp; after check-out</li>
+        </ul>
+      </div>
+      <div class="svc-group r d3">
+        <h3>Paid Services</h3>
+        <ul class="svc-list">
+          <li><div class="svc-icon">👕</div>Washing machine — Available on request</li>
+          <li><div class="svc-icon">🚗</div>Station pick-up service — From local station</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STAY INFO ──────────────────────────────────────── -->
+<section class="sec stay" id="stay">
+  <div class="ctn">
+    <p class="label r">Plan Your Visit</p>
+    <h2 class="title r d1">Stay<br><em>information</em></h2>
+    <div class="stay-grid">
+      <div class="icard r d2">
+        <h3>Check-in / Check-out</h3>
+        <div class="irow">
+          <div class="lbl">Check-in</div>
+          <div class="val">From 4:00 PM</div>
+        </div>
+        <div class="irow">
+          <div class="lbl">Check-out</div>
+          <div class="val">By 11:00 AM</div>
+        </div>
+      </div>
+      <div class="icard r d3">
+        <h3>House Rules</h3>
+        <ul class="ilist">
+          <li>Non-smoking property throughout</li>
+          <li>No pets allowed</li>
+          <li>Please help maintain a peaceful atmosphere for all guests</li>
+        </ul>
+      </div>
+      <div class="icard r d4">
+        <h3>Cancellation Policy</h3>
+        <ul class="ilist">
+          <li>100% cancellation fee applies after reservation confirmation</li>
+          <li>Please contact us as early as possible if plans change</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LOCATION ───────────────────────────────────────── -->
+<section class="sec wazuka" id="location">
+  <div class="ctn">
+    <div class="wazuka-top">
+      <div class="rl">
+        <p class="label">Where We Are</p>
+        <h2 class="title">Wazuka,<br><em>Kyoto</em></h2>
+        <div class="rule"></div>
+        <p>
+          Wazuka is a beautiful countryside town located in southern Kyoto, famous for its breathtaking tea fields and traditional tea culture.
+        </p>
+        <p style="margin-top:14px;">
+          Enjoy the changing seasons, peaceful landscapes, and relaxing atmosphere unique to rural Japan.
+        </p>
+        <div class="exp-grid" style="margin-top:34px;">
+          <div class="exp-item">🍵 Tea tasting</div>
+          <div class="exp-item">🚶 Tea field walking tours</div>
+          <div class="exp-item">🚲 Bicycle rentals</div>
+          <div class="exp-item">☕ Matcha &amp; local cafés</div>
+          <div class="exp-item">📷 Countryside photography</div>
+          <div class="exp-item">🌿 Quiet nature walks</div>
+        </div>
+      </div>
+
+      <!-- PHOTO: Wazuka landscape — wide rows of tea bushes, southern Kyoto countryside -->
+      <!-- Replace with your own landscape photo of the Wazuka tea fields -->
+      <div class="wazuka-img rr">
+        <img
+          src="Images/wazuka.jpeg"
+          alt="Wazuka tea plantation, Kyoto"
+        >
+      </div>
+    </div>
+
+    <p class="label r">Gallery</p>
+    <div class="gallery r d1">
+
+      <!-- PHOTO: Gallery main — best tea field photo, this is the largest gallery image -->
+      <!-- Replace with your most stunning tea field shot -->
+      <div class="g-item">
+        <img
+          src="https://images.unsplash.com/photo-1554830072-52d78d0d4c18?w=900&q=80&fit=crop"
+          alt="Tea fields in Wazuka"
+        >
+        <div class="g-cap">Tea Fields</div>
+      </div>
+
+      <!-- PHOTO: Gallery — matcha or tea experience, close-up of tea preparation or ceremony -->
+      <!-- Replace with a matcha/tea experience photo -->
+      <div class="g-item">
+        <img
+          src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80&fit=crop"
+          alt="Matcha and tea experience in Wazuka"
+        >
+        <div class="g-cap">Matcha Experience</div>
+      </div>
+
+      <!-- PHOTO: Gallery — countryside path through tea bushes or rural Wazuka road -->
+      <!-- Replace with a photo of a path or trail through the tea fields -->
+      <div class="g-item">
+        <img
+          src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&fit=crop"
+          alt="Countryside path in Wazuka"
+        >
+        <div class="g-cap">Countryside Walks</div>
+      </div>
+
+      <!-- PHOTO: Gallery — local culture, neighborhood, traditional houses or local scenery -->
+      <!-- Replace with a photo of local Wazuka community, architecture, or everyday life -->
+      <div class="g-item">
+        <img
+          src="https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=600&q=80&fit=crop"
+          alt="Local culture and neighborhood in Wazuka"
+        >
+        <div class="g-cap">Local Culture</div>
+      </div>
+
+    </div>
+
+    <!-- Google Maps embed — Nakayama-19 Bessho, Wazuka, Soraku District, Kyoto 619-1211 -->
+    <div class="map-block r">
+      <div class="map-header">
+        <h3>Find Us</h3>
+        <span class="map-address">Nakayama-19 Bessho, Wazuka, Soraku District, Kyoto 619-1211</span>
+      </div>
+      <iframe
+        class="map-frame"
+        src="https://maps.google.com/maps?q=Nakayama-19+Bessho,+Wazuka,+Soraku+District,+Kyoto+619-1211,+Japan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Stay at Matcha Fields — location map"
+      ></iframe>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── HOST ───────────────────────────────────────────── -->
+<section class="sec host" id="host">
+  <div class="ctn">
+    <div class="host-grid">
+
+      <!-- PHOTO: Host portrait — Mao, natural/warm, smiling, at the guesthouse or outdoors -->
+      <!-- Replace with a real photo of Mao. Natural light, casual and welcoming feel. -->
+      <div class="host-img rl">
+        <img
+          src="Images/masayo.jpg"
+          alt="Mao — host of Stay at Matcha Fields"
+        >
+      </div>
+
+      <div class="rr">
+        <p class="label">Your Host</p>
+        <h2 class="host-name">Hi, I'm Mao.</h2>
+        <p class="host-role">Host · Stay at Matcha Fields · Wazuka, Kyoto</p>
+        <div class="host-text">
+          <p>
+            I was born and raised by the beach in Chiba, Japan, and I've always loved traveling, meeting new people, and sharing cultures.
+          </p>
+          <p>
+            I run cozy guesthouses in Wazuka, Kyoto, and Tokyo. Each place has its own atmosphere — from peaceful tea fields to lively local neighborhoods — but my goal is always the same: to make guests feel relaxed, welcome, and connected to Japan in a personal way.
+          </p>
+          <p>
+            I enjoy sharing local recommendations, hidden spots, and everyday experiences with guests. Many parts of the houses include DIY touches, and I'm especially interested in creating warm, sustainable, and community-minded spaces.
+          </p>
+          <p><em>I'd be very happy to welcome you and help you enjoy a more personal side of Japan.</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STICKY BOOK BUTTON ────────────────────────────── -->
+<a
+  href="https://www.airbnb.com/rooms/1249170378943423517"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="sticky-book"
+  id="stickyBook"
+  aria-label="Book on Airbnb"
+>
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M16 1C9.925 1 5 5.925 5 12c0 7.18 6.39 12.583 10.406 15.533a1 1 0 001.188 0C20.61 24.583 27 19.18 27 12c0-6.075-4.925-11-11-11zm0 2c4.97 0 9 4.03 9 9 0 5.842-5.197 10.677-9 13.51C12.197 22.677 7 17.842 7 12c0-4.97 4.03-9 9-9zm0 4a5 5 0 100 10A5 5 0 0016 7zm0 2a3 3 0 110 6 3 3 0 010-6z"/>
+  </svg>
+  Book on Airbnb
+</a>
+
+<!-- ── BOOKING ────────────────────────────────────────── -->
+<section class="sec booking" id="booking">
+  <div class="ctn">
+    <div class="booking-inner">
+      <p class="label r" style="justify-content:center;">Reserve Your Room</p>
+      <h2 class="title booking-title r d1">Book Your<br><em>Stay</em></h2>
+      <div class="booking-rule r d2"></div>
+      <p class="booking-text r d2">
+        Ready to experience the peace of Wazuka's tea fields?<br>
+        Check real-time availability and reserve your room directly through Airbnb.
+      </p>
+      <div class="r d3">
+        <a
+          href="https://www.airbnb.com/rooms/1249170378943423517"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="booking-btn"
+          aria-label="Check availability on Airbnb"
+        >
+          <!-- Airbnb bélo icon -->
+          <svg class="airbnb-belo" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 1C9.925 1 5 5.925 5 12c0 7.18 6.39 12.583 10.406 15.533a1 1 0 001.188 0C20.61 24.583 27 19.18 27 12c0-6.075-4.925-11-11-11zm0 2c4.97 0 9 4.03 9 9 0 5.842-5.197 10.677-9 13.51C12.197 22.677 7 17.842 7 12c0-4.97 4.03-9 9-9zm0 4a5 5 0 100 10A5 5 0 0016 7zm0 2a3 3 0 110 6 3 3 0 010-6z"/>
+          </svg>
+          Check Availability on Airbnb
+        </a>
+        <p class="booking-note">
+          <span>Secure booking</span>
+          <span>Instant confirmation</span>
+          <span>Superhost</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────── -->
+<section class="sec contact" id="contact">
+  <div class="ctn">
+    <div class="contact-grid">
+      <div>
+        <p class="label label--lt r">Get in Touch</p>
+        <h2 class="title title--lt r d1">Get in<br><em style="color:var(--tea-light)">touch</em></h2>
+        <div class="rule rule--lt r d2"></div>
+        <div class="contact-aside r d2">
+          <p class="sub">
+            We'd love to welcome you. Send us a message and we'll get back to you as soon as possible.
+          </p>
+          <div class="c-detail">
+            <div class="c-row"><span class="c-lbl">Address</span><span>Nakayama-19 Bessho, Wazuka, Soraku District, Kyoto 619-1211</span></div>
+            <div class="c-row"><span class="c-lbl">Phone</span><span>090-1217-3065</span></div>
+            <div class="c-row"><span class="c-lbl">Check-in</span><span>From 4:00 PM</span></div>
+            <div class="c-row"><span class="c-lbl">Check-out</span><span>By 11:00 AM</span></div>
+            <div class="c-row"><span class="c-lbl">Google</span><span style="color:#F5C842;">★★★★★</span><span style="margin-left:4px;">5.0 · 21 reviews</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="r d2">
+        <form class="form" id="bookForm" novalidate>
+          <div class="fg full">
+            <label for="fname">Full Name *</label>
+            <input type="text" id="fname" name="fname" placeholder="Your name" required>
+            <span class="err">Please enter your name</span>
+          </div>
+          <div class="fg full">
+            <label for="femail">Email Address *</label>
+            <input type="email" id="femail" name="femail" placeholder="your@email.com" required>
+            <span class="err">Please enter a valid email address</span>
+          </div>
+          <div class="fg full">
+            <label for="fsubject">Subject *</label>
+            <input type="text" id="fsubject" name="fsubject" placeholder="What would you like to ask?" required>
+            <span class="err">Please enter a subject</span>
+          </div>
+          <div class="fg full">
+            <label for="fmsg">Message *</label>
+            <textarea id="fmsg" name="fmsg" placeholder="Tell us about your trip, any questions, or anything we can help with…" required></textarea>
+            <span class="err">Please enter a message</span>
+          </div>
+          <div class="form-foot">
+            <button type="submit">Send Message</button>
+          </div>
+        </form>
+
+        <div class="form-ok" id="formOk">
+          <h3 id="okTitle">Thank you!</h3>
+          <p>We've received your message and will get back to you very soon.<br>We look forward to welcoming you to Matcha Fields.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer>
+  <div class="ctn">
+    <div class="f-logo">Stay at Matcha Fields</div>
+    <div class="f-sub">民泊 田舎宿 抹茶畑に泊まろう。· Wazuka, Kyoto</div>
+    <ul class="f-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#host">Host</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="f-copy">© 2024 Stay at Matcha Fields · All rights reserved</p>
+  </div>
+</footer>
+
+<script>
+/* ── STICKY BOOK BUTTON ──────────────────── */
+const stickyBook = document.getElementById('stickyBook');
+window.addEventListener('scroll', () => {
+  stickyBook.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+}, { passive: true });
+
+/* ── NAVBAR ──────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('solid', window.scrollY > 60);
+}, { passive: true });
+
+/* ── HERO PARALLAX ───────────────────────── */
+const heroBg = document.getElementById('heroBg');
+window.addEventListener('scroll', () => {
+  if (window.scrollY < window.innerHeight) {
+    heroBg.style.transform = `translateY(${window.scrollY * 0.28}px) scale(1.12)`;
+  }
+}, { passive: true });
+
+/* ── MOBILE MENU ─────────────────────────── */
+const ham    = document.getElementById('ham');
+const drawer = document.getElementById('drawer');
+ham.addEventListener('click', () => {
+  const open = ham.classList.toggle('open');
+  drawer.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+document.querySelectorAll('.dl').forEach(a => {
+  a.addEventListener('click', () => {
+    ham.classList.remove('open');
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+/* ── SCROLL REVEAL ───────────────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('revealed');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+document.querySelectorAll('.r, .rl, .rr').forEach(el => obs.observe(el));
+
+/* ── FORM VALIDATION ─────────────────────── */
+const form    = document.getElementById('bookForm');
+const formOk  = document.getElementById('formOk');
+const okTitle = document.getElementById('okTitle');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  let ok = true;
+
+  form.querySelectorAll('.fg').forEach(g => g.classList.remove('bad'));
+
+  const need = (id, test) => {
+    const el = document.getElementById(id);
+    if (!test(el.value.trim())) {
+      el.closest('.fg').classList.add('bad');
+      ok = false;
+    }
+    return el.value.trim();
+  };
+
+  const name = need('fname',    v => v.length > 0);
+               need('femail',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+               need('fsubject', v => v.length > 0);
+               need('fmsg',     v => v.length > 0);
+
+  if (ok) {
+    okTitle.textContent = `Thank you, ${name}!`;
+    form.style.display  = 'none';
+    formOk.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
